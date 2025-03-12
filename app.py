@@ -33,4 +33,4 @@ def uploads(filename):
     return send_from_directory("uploads", filename)
 
 
-app.run(debug=True)
+app.run(debug=True, port=5500, host="0.0.0.0")
