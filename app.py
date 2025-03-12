@@ -30,7 +30,19 @@ def upload_file():
 
 @app.route("/uploads/<filename>")
 def uploads(filename):
+    html_code = f"<a href='/uploads/{filename}/see'>see the file</a> <br> <a href='/uploads/{filename}/delete'>delete the file</a>"
+    return render_template("file.html", title=filename, head=filename, see=html_code)
+
+@app.route("/uploads/<filename>/see")
+def download_file(filename):
     return send_from_directory("uploads", filename)
+
+@app.route("/uploads/<filename>/delete")
+def delete_file(filename):
+    os.remove(f"uploads/{filename}")
+    files = os.listdir("uploads")
+
+    return render_template("index.html", files=files)
 
 
 app.run(debug=True, port=5500, host="0.0.0.0")
