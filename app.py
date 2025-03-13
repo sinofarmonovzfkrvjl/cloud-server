@@ -30,8 +30,9 @@ def upload_file():
 
 @app.route("/uploads/<filename>")
 def uploads(filename):
-    html_code = f"<a href='/uploads/{filename}/see'>see the file</a> <br> <a href='/uploads/{filename}/delete'>delete the file</a>"
-    return render_template("file.html", title=filename, head=filename, see=html_code)
+    html_code = f"<br> <a href='/uploads/{filename}/delete'>delete the file</a><br>"
+
+    return render_template("file.html", title=filename, head=filename, code=html_code)
 
 @app.route("/uploads/<filename>/see")
 def download_file(filename):

@@ -3,10 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ title|safe }}</title>
+    <title>{{ title_word|safe }}</title>
 </head>
 <body>
+    <h1><a href="/">Cloud Server</a></h1>
+    <a href="{{ head }}/see"><img src="{{ head }}/see" alt="nothing"></a>
     <h1>{{ head|safe }}</h1>
-    <p>{{ see|safe }}</p>
+    <p>{{ code|safe }}</p>
+    <a href="{{ head }}/see" download="{{ head }}">download</a>
+    <br><br><br><br><br><br>
 </body>
 </html>
