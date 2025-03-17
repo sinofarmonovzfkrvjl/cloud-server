@@ -1,49 +1,50 @@
-from flask import Flask, render_template, request, send_from_directory
+from flask import Flask, render_template, request, send_from_directory, redirect
 import os
-
 
 app = Flask(__name__)
 
 os.makedirs("uploads", exist_ok=True)
 
-@app.route('/')
+@app.route('/', methods=['GET', 'POST'])
 def HomePage():
-    files = os.listdir("uploads")
+    if request.method == "POST":
 
-    return render_template('index.html', files=files)
-
-@app.route('/upload', methods=['POST'])
-def upload_file():
-    if 'file' not in request.files:
-        return "No file part", 400
+        if 'file' not in request.files:
+            return "No file part", 400
     
-    file = request.files['file']
-    if file.filename == "":
-        return "No selected file", 400
-    
-    file_path = os.path.join("uploads", file.filename)
-    file.save(file_path)
+        file = request.files['file']
+        if file.filename == "":
+            return "No selected file", 400
+        
+        file_path = os.path.join("uploads", file.filename)
+        file.save(file_path)
 
-    files = os.listdir("uploads")
+        files = os.listdir("uploads")
 
-    return render_template('index.html', file=file.filename, files=files)
+        return render_template('upload.html', file=file.filename, files=files)
+    else:
+        files = os.listdir("uploads")
 
-@app.route("/uploads/<filename>")
+        return render_template('upload.html', files=files)
+
+@app.route("/<filename>")
 def uploads(filename):
-    html_code = f"<br> <a href='/uploads/{filename}/delete'>delete the file</a><br>"
+    html_code = f"<br> <a href='/{filename}/delete'>delete the file</a><br>"
 
     return render_template("file.html", title=filename, head=filename, code=html_code)
 
-@app.route("/uploads/<filename>/see")
+@app.route("/<filename>/see")
 def download_file(filename):
     return send_from_directory("uploads", filename)
 
-@app.route("/uploads/<filename>/delete")
+@app.route("/<filename>/delete")
 def delete_file(filename):
-    os.remove(f"uploads/{filename}")
-    files = os.listdir("uploads")
+    try:
+        os.remove(f"uploads/{filename}")
+    except:
+        pass
 
-    return render_template("index.html", files=files)
+    return redirect("/", code=302)
 
 
 app.run(debug=True, port=5500, host="0.0.0.0")

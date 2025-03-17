@@ -1,0 +1,22 @@
+{% extends 'index.html' %}
+
+{% block body %}
+<form action="/", method="POST" enctype="multipart/form-data">
+    <input type="file" name="file">
+    <input type="submit" value="Upload">
+</form>
+<div>
+    {% if file %}
+        <p>File uploaded: {{ file }}</p>
+    {% endif %}
+    {% if files %}
+            <ul>
+                {% for f in files %}
+                    <p><a href="/{{ f }}">{{ f }}</a></p>
+                {% endfor %}
+            </ul>
+    {% else %}
+        <p></p>
+    {% endif %}
+</div>
+{% endblock %}
